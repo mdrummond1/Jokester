@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local_vms="clr-namespace:Jokester.ViewModels"
+             xmlns:local_models="clr-namespace:Jokester.Models"
+             x:Class="Jokester.MainPage"
+             x:DataType="local_vms:ChuckNorrisJokeViewModel">
+
+    <ContentPage.Resources>
+        <x:Double x:Key="DefaultHeight">40</x:Double>
+        <Style TargetType="Button">
+            <Setter Property="HeightRequest" Value="{StaticResource DefaultHeight}"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Image
+                Source="chucknorris_logo_coloured_small.png"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="{Binding Joke.value}"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="28"
+                HorizontalOptions="Center" />
+
+            <Button
+                Text="Get Random Joke"
+                SemanticProperties.Hint="Get a random Chuck Norris joke"
+                Command="{Binding GetChuckNorrisJokeCommand}"
+                HorizontalOptions="Center" />
+
+            <HorizontalStackLayout HorizontalOptions="Center">
+
+                <Picker 
+                    SelectedIndex="0" 
+                    ItemsSource="{Binding Categories}" 
+                    SelectedItem="{Binding SelectedCategory}" 
+                    HorizontalOptions="Start" 
+                    BackgroundColor="AliceBlue" 
+                    TextColor="Black"
+                    HeightRequest="{StaticResource DefaultHeight}"/>
+
+                <Button
+                    Text="Get Categorized Joke"
+                    SemanticProperties.Hint="Get a categorized Chuck Norris joke"
+                    Command="{Binding GetRandomChuckNorrisJokeFromCategoryCommand}"
+                    HorizontalOptions="End" HeightRequest="40"/>
+
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout HorizontalOptions="Center">
+
+                <Entry 
+                    Placeholder="Joke Text to Search For" 
+                    Text="{Binding JokeSearchText}" 
+                    VerticalTextAlignment="Center" 
+                    HorizontalOptions="Start" 
+                    BackgroundColor="AliceBlue" 
+                    TextColor="Black" 
+                    HeightRequest="{StaticResource DefaultHeight}"/>
+
+                <Button
+                    Text="Search Jokes"
+                    SemanticProperties.Hint="Get a categorized Chuck Norris joke"
+                    Command="{Binding SearchJokeCommand}"
+                    HorizontalOptions="End" />
+
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Label 
+                    Text="Found" Margin="0,0,5,0"/>
+                <Label 
+                    Text="{Binding NumberSearchResults}" 
+                    Margin="0,0,5,0"/>
+                <Label 
+                    Text="Results."/>
+            </HorizontalStackLayout>
+
+            <CarouselView 
+                ItemsSource="{Binding FoundJokes}" 
+                HorizontalOptions="Center" 
+                Margin="25">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="local_models:ChuckNorrisJoke">
+                        <VerticalStackLayout 
+                            HorizontalOptions="StartAndExpand" 
+                            Margin="20">
+                            <Image 
+                                HorizontalOptions="Center" 
+                                Source="chucknorris_logo_coloured_small.png" 
+                                MaximumWidthRequest="100" 
+                                MaximumHeightRequest="100" 
+                                Margin="15"/>
+                            <Label 
+                                Text="{Binding value}" 
+                                HorizontalOptions="Center" 
+                                HorizontalTextAlignment="Center" 
+                                VerticalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
