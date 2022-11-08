@@ -41,11 +41,12 @@
                 <Picker 
                     SelectedIndex="0" 
                     ItemsSource="{Binding Categories}" 
-                    SelectedItem="{Binding SelectedCategory}" 
+                    SelectedItem="{Binding SelectedCategory}"
                     HorizontalOptions="Start" 
                     BackgroundColor="AliceBlue" 
                     TextColor="Black"
-                    HeightRequest="{StaticResource DefaultHeight}"/>
+                    HeightRequest="{StaticResource DefaultHeight}"
+                    VerticalOptions="Center"/>
 
                 <Button
                     Text="Get Categorized Joke"
@@ -84,30 +85,31 @@
                     Text="Results."/>
             </HorizontalStackLayout>
 
-            <CarouselView 
+            <ListView
                 ItemsSource="{Binding FoundJokes}" 
-                HorizontalOptions="Center" 
+                HorizontalOptions="CenterAndExpand" 
                 Margin="25">
-                <CarouselView.ItemTemplate>
+                <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local_models:ChuckNorrisJoke">
-                        <VerticalStackLayout 
-                            HorizontalOptions="StartAndExpand" 
-                            Margin="20">
-                            <Image 
-                                HorizontalOptions="Center" 
-                                Source="chucknorris_logo_coloured_small.png" 
-                                MaximumWidthRequest="100" 
-                                MaximumHeightRequest="100" 
-                                Margin="15"/>
-                            <Label 
-                                Text="{Binding value}" 
-                                HorizontalOptions="Center" 
-                                HorizontalTextAlignment="Center" 
-                                VerticalOptions="Center"/>
-                        </VerticalStackLayout>
+                        <ViewCell>
+                            <VerticalStackLayout>
+                                <Image
+                                    MaximumHeightRequest="50"
+                                    MaximumWidthRequest="50"
+                                    Source="chucknorris_logo_coloured_small.png"/>
+
+                                <Label 
+                                    Text="{Binding value}" 
+                                    HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </ViewCell>
                     </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
+                </ListView.ItemTemplate>
+
+            </ListView>
+            <Button
+                Text="Clear Search"
+                Command="{Binding ClearFoundJokesCommand}"/>
         </VerticalStackLayout>
     </ScrollView>
 

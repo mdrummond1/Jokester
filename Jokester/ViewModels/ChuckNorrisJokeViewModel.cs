@@ -51,6 +51,14 @@ namespace Jokester.ViewModels
             GetRequestResult($"{BaseAddress}/search?query={JokeSearchText}");
         }
 
+        [RelayCommand]
+        private void ClearFoundJokes()
+        {
+            NumberSearchResults = 0;
+            JokeSearchText = "";
+            FoundJokes.Clear();
+        }
+
         private async void GetRequestResult(string url)
         {
             try
@@ -64,6 +72,7 @@ namespace Jokester.ViewModels
                 {
                     value = "Error processing request!"
                 };
+                JokeSearchText = "";
             }
         }
 
