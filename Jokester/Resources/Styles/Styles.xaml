@@ -43,6 +43,8 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+        <Setter Property="HeightRequest" Value="{StaticResource DefaultHeight}"/>
+        
     </Style>
 
     <Style TargetType="CheckBox">
@@ -380,5 +382,7 @@
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
+
+    
 
 </ResourceDictionary>

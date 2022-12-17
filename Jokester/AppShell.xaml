@@ -4,12 +4,21 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Jokester"
+    xmlns:views="clr-namespace:Jokester.Views"
     Shell.FlyoutBehavior="Flyout">
-
+    
     <ShellContent
         Title="Chuck Norris Jokes"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"
-        Icon="chucknorris_logo_coloured_small.png"/>
+        ContentTemplate="{DataTemplate views:ChuckNorrisView}"
+        Route="ChuckNorrisView"
+        Icon="chucknorris_logo_coloured_small.png"
+        />
+
+    <ShellContent
+        Title="Geeky Jokes"
+        ContentTemplate="{DataTemplate views:GeekyJokeView}"
+        Route="GeekyJokeView"
+        Icon="geek_square.jpg"
+        />
 
 </Shell>

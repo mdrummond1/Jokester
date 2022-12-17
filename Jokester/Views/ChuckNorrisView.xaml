@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local_models="clr-namespace:Jokester.Models"
+             xmlns:local_viewModels="clr-namespace:Jokester.ViewModels"
+             x:Class="Jokester.Views.ChuckNorrisView"
+             x:DataType="local_viewModels:ChuckNorrisJokeViewModel">
+
+    <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+        <Image
+                Source="chucknorris_logo_coloured_small.png"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+        <Label
+                Text="{Binding Joke.Value}"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="28"
+                HorizontalOptions="Center" />
+
+        <Button
+                Text="Get Random Joke"
+                SemanticProperties.Hint="Get a random Chuck Norris joke"
+                Command="{Binding GetChuckNorrisJokeCommand}"
+                HorizontalOptions="Center" />
+
+        <VerticalStackLayout HorizontalOptions="Center" Spacing="50">
+
+            <Picker
+                    SelectedIndex="0" 
+                    ItemsSource="{Binding Categories}" 
+                    SelectedItem="{Binding SelectedCategory}"
+                    HorizontalOptions="StartAndExpand" 
+                    BackgroundColor="Green" 
+                    TextColor="Black"
+                    HeightRequest="{StaticResource DefaultHeight}"
+                    VerticalOptions="CenterAndExpand"/>
+
+            <Button
+                    Text="Get Categorized Joke"
+                    SemanticProperties.Hint="Get a categorized Chuck Norris joke"
+                    Command="{Binding GetRandomChuckNorrisJokeFromCategoryCommand}"
+                    HorizontalOptions="End" HeightRequest="40"/>
+
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+
+            <Entry 
+                    Placeholder="Joke Text to Search For" 
+                    Text="{Binding JokeSearchText}" 
+                    VerticalTextAlignment="Center" 
+                    HorizontalOptions="Start" 
+                    BackgroundColor="AliceBlue" 
+                    TextColor="Black" 
+                    HeightRequest="{StaticResource DefaultHeight}"/>
+
+            <Button
+                    Text="Search Jokes"
+                    SemanticProperties.Hint="Get a categorized Chuck Norris joke"
+                    Command="{Binding SearchJokeCommand}"
+                    HorizontalOptions="End" />
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout>
+            <Label 
+                    Text="Found" Margin="0,0,5,0"/>
+            <Label 
+                    Text="{Binding NumberSearchResults}" 
+                    Margin="0,0,5,0"/>
+            <Label 
+                    Text="Results."/>
+        </HorizontalStackLayout>
+
+
+        <CollectionView
+                    ItemsSource="{Binding FoundJokes}" 
+                    HorizontalOptions="Center"
+                    HeightRequest="100"
+                    >
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local_models:ChuckNorrisJoke">
+
+                    <HorizontalStackLayout>
+                        <Image
+                            MaximumHeightRequest="50"
+                            MaximumWidthRequest="50"
+                            Source="chucknorris_logo_coloured_small.png"/>
+
+                        <Label 
+                            Text="{Binding Value}" 
+                            HorizontalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <Button
+            Text="Clear Search"
+            Command="{Binding ClearFoundJokesCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

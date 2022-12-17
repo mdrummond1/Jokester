@@ -2,14 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Jokester.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Jokester.ViewModels
 {
@@ -42,18 +35,41 @@ namespace Jokester.ViewModels
         [RelayCommand]
         private void GetRandomChuckNorrisJokeFromCategory()
         {
+            if (selectedCategory is null)
+            {
+                Joke = new ChuckNorrisJoke()
+                {
+                    Value = "Must select a category "
+                };
+                return;            
+            }
+
             GetRequestResult($"{BaseAddress}/random?category={SelectedCategory}");
         }
 
         [RelayCommand]
         private void SearchJoke()
         {
+            if (string.IsNullOrEmpty(JokeSearchText))
+            {
+                Joke = new ChuckNorrisJoke()
+                {
+                    Value = "Search must not be blank!"
+                };
+                return;
+            }
+
             GetRequestResult($"{BaseAddress}/search?query={JokeSearchText}");
         }
 
         [RelayCommand]
         private void ClearFoundJokes()
         {
+            if (FoundJokes is null)
+            {
+                return; 
+            }
+
             NumberSearchResults = 0;
             JokeSearchText = "";
             FoundJokes.Clear();
@@ -70,7 +86,7 @@ namespace Jokester.ViewModels
             {
                 Joke = new ChuckNorrisJoke()
                 {
-                    value = "Error processing request!"
+                    Value = "Error processing request!"
                 };
                 JokeSearchText = "";
             }
@@ -79,7 +95,7 @@ namespace Jokester.ViewModels
         private void UpdateJoke(string res)
         {
             Joke = JsonConvert.DeserializeObject<ChuckNorrisJoke>(res);
-            if (string.IsNullOrEmpty(Joke.value))
+            if (string.IsNullOrEmpty(Joke.Value))
             {
                 var searchResults = JsonConvert.DeserializeObject<ChuckNorrisJokeSearchResults>(res);
                 NumberSearchResults = searchResults.total;
@@ -92,7 +108,7 @@ namespace Jokester.ViewModels
                 }
                 JokeSearchText = "";
             }
-            SemanticScreenReader.Announce(Joke.value);
+            SemanticScreenReader.Announce(Joke.Value);
         }
 
         public ChuckNorrisJokeViewModel()
