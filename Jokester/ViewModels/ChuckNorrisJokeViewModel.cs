@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jokester.Models;
+using Jokester.Services;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
@@ -10,9 +11,10 @@ namespace Jokester.ViewModels
     {
 
         private readonly string BaseAddress = "https://api.chucknorris.io/jokes";
-        private HttpClient httpClient;
+        private readonly IAPIService apiService;
+        private readonly ITextToSpeechService textToSpeechService;
 
-        [ObservableProperty]
+        [ObservableProperty, NotifyCanExecuteChangedFor(nameof(TellJokeCommand))]
         private ChuckNorrisJoke joke;
         [ObservableProperty]
         private ObservableCollection<string> categories;
@@ -24,13 +26,15 @@ namespace Jokester.ViewModels
         private string jokeSearchText;
         [ObservableProperty]
         private int numberSearchResults;
+        [ObservableProperty]
+        private ChuckNorrisJoke selectedFoundJoke;
+
 
         [RelayCommand]
         private void GetChuckNorrisJoke()
         {
             GetRequestResult($"{BaseAddress}/random");
         }
-
 
         [RelayCommand]
         private void GetRandomChuckNorrisJokeFromCategory()
@@ -41,7 +45,7 @@ namespace Jokester.ViewModels
                 {
                     Value = "Must select a category "
                 };
-                return;            
+                return;
             }
 
             GetRequestResult($"{BaseAddress}/random?category={SelectedCategory}");
@@ -67,20 +71,32 @@ namespace Jokester.ViewModels
         {
             if (FoundJokes is null)
             {
-                return; 
+                return;
             }
 
             NumberSearchResults = 0;
             JokeSearchText = "";
             FoundJokes.Clear();
+            SelectedFoundJoke = null;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanTellJoke))]
+        private void TellJoke()
+        {
+            textToSpeechService.SpeakAsync(Joke.Value);
+        }
+
+        private bool CanTellJoke()
+        {
+            return Joke is not null;
         }
 
         private async void GetRequestResult(string url)
         {
             try
             {
-                var res = await httpClient.GetStringAsync(url);
-                UpdateJoke(res);    
+                var res = await apiService.MakeAPIRequest(url);
+                UpdateJoke(res);
             }
             catch
             {
@@ -102,24 +118,28 @@ namespace Jokester.ViewModels
 
                 FoundJokes = new ObservableCollection<ChuckNorrisJoke>();
 
-                foreach(var joke in searchResults.result)
+                if (searchResults.total > 0)
                 {
-                    FoundJokes.Add(joke);
+                    foreach (var joke in searchResults.result)
+                    {
+                        FoundJokes.Add(joke);
+                    }
                 }
                 JokeSearchText = "";
             }
-            SemanticScreenReader.Announce(Joke.Value);
         }
 
-        public ChuckNorrisJokeViewModel()
+        public ChuckNorrisJokeViewModel(IAPIService apiService, ITextToSpeechService textToSpeech)
         {
-            httpClient = new HttpClient();
+            this.apiService = apiService;
+            this.textToSpeechService = textToSpeech;
             UpdateCategories();
+            
         }
 
         private async void UpdateCategories()
         {
-            var res = await httpClient.GetStringAsync($"{BaseAddress}/categories");
+            var res = await apiService.MakeAPIRequest($"{BaseAddress}/categories");
             var list = JsonConvert.DeserializeObject<List<string>>(res);
 
 
@@ -130,6 +150,5 @@ namespace Jokester.ViewModels
                 Categories.Add(cat);
             }
         }
-
     }
 }

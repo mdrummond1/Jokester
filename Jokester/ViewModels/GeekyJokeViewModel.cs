@@ -1,21 +1,42 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Jokester.Models;
+using Jokester.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace Jokester.ViewModels
 {
     public partial class GeekyJokeViewModel: ObservableObject
     {
+        private string url = "https://geek-jokes.sameerkumar.website/api?format=json";
+
+        private IAPIService apiService;
+
         [ObservableProperty]
-        private string test;
+        private JokeModel joke;
+
+        [ObservableProperty]
+        private ObservableCollection<string> categories;
 
 
-        public GeekyJokeViewModel()
+        [RelayCommand]
+        private async void GetJoke()
         {
-            Test = "OTHER JOKE!";        
+            var res = await apiService.MakeAPIRequest(url);
+            Joke = JsonConvert.DeserializeObject<JokeModel>(res); 
+        }
+
+        public GeekyJokeViewModel(IAPIService apiService)
+        {
+            this.apiService = apiService;
+
         }
 
     }
