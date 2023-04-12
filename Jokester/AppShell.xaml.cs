@@ -10,5 +10,6 @@ public partial class AppShell : Shell
 
 		Routing.RegisterRoute(nameof(ChuckNorrisView), typeof(ChuckNorrisView));
         Routing.RegisterRoute(nameof(GeekyJokeView), typeof(GeekyJokeView));
+		Routing.RegisterRoute(nameof(JokeAPIView), typeof(JokeAPIView));
     }
 }
