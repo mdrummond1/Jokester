@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using Jokester.ViewModels;
 
 namespace Jokester.Views;
@@ -8,5 +9,5 @@ public partial class GeekyJokeView : ContentPage
 	{
 		InitializeComponent();
 		BindingContext= geekyJokeViewModel;
-	}
+    }
 }

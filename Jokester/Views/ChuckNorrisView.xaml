@@ -5,105 +5,117 @@
              xmlns:local_viewModels="clr-namespace:Jokester.ViewModels"
              x:Class="Jokester.Views.ChuckNorrisView"
              x:DataType="local_viewModels:ChuckNorrisJokeViewModel">
+    
+    <ScrollView>
 
-    <VerticalStackLayout
+        <VerticalStackLayout
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
 
-        <Image
+            <Image
                 Source="chucknorris_logo_coloured_small.png"
-                HeightRequest="200"
+                HeightRequest="150"
                 HorizontalOptions="Center" />
 
-        <Label
+            <Label
                 Text="{Binding Joke.Value}"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="28"
                 HorizontalOptions="Center" />
 
-        <Button
+            <Button
                 Text="Get Random Joke"
                 SemanticProperties.Hint="Get a random Chuck Norris joke"
                 Command="{Binding GetChuckNorrisJokeCommand}"
                 HorizontalOptions="Center" />
 
-        <VerticalStackLayout HorizontalOptions="Center" Spacing="50">
+            <VerticalStackLayout HorizontalOptions="Center" Spacing="20">
+                <Border 
+                    StrokeShape="RoundRectangle 10" 
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}">
 
-            <Picker
-                    SelectedIndex="0" 
-                    ItemsSource="{Binding Categories}" 
-                    SelectedItem="{Binding SelectedCategory}"
-                    HorizontalOptions="StartAndExpand" 
-                    BackgroundColor="Green" 
-                    TextColor="Black"
-                    HeightRequest="{StaticResource DefaultHeight}"
-                    VerticalOptions="CenterAndExpand"/>
+                    <Picker
+                        Title="Select a Category"
+                        SelectedIndex="0" 
+                        ItemsSource="{Binding Categories}" 
+                        SelectedItem="{Binding SelectedCategory}"
+                        HorizontalOptions="Center" 
+                        HeightRequest="{StaticResource DefaultHeight}"
+                        VerticalOptions="Center"/>
+                </Border>
 
-            <Button
+                <Button
                     Text="Get Categorized Joke"
                     SemanticProperties.Hint="Get a categorized Chuck Norris joke"
                     Command="{Binding GetRandomChuckNorrisJokeFromCategoryCommand}"
-                    HorizontalOptions="End" HeightRequest="40"/>
+                    HorizontalOptions="Center" HeightRequest="40"/>
 
-        </VerticalStackLayout>
+            </VerticalStackLayout>
 
-        <HorizontalStackLayout HorizontalOptions="Center">
+            <HorizontalStackLayout HorizontalOptions="Center">
 
-            <Entry 
+                <Entry 
                     Placeholder="Joke Text to Search For" 
                     Text="{Binding JokeSearchText}" 
-                    VerticalTextAlignment="Center" 
+                    VerticalTextAlignment="Center"
                     HorizontalOptions="Start" 
                     BackgroundColor="AliceBlue" 
                     TextColor="Black" 
                     HeightRequest="{StaticResource DefaultHeight}"/>
 
-            <Button
+                <Button
                     Text="Search Jokes"
                     SemanticProperties.Hint="Get a categorized Chuck Norris joke"
                     Command="{Binding SearchJokeCommand}"
                     HorizontalOptions="End" />
 
-        </HorizontalStackLayout>
+            </HorizontalStackLayout>
 
-        <HorizontalStackLayout>
-            <Label 
+            <HorizontalStackLayout>
+                <Label 
                     Text="Found" Margin="0,0,5,0"/>
-            <Label 
+                <Label 
                     Text="{Binding NumberSearchResults}" 
                     Margin="0,0,5,0"/>
-            <Label 
+                <Label 
                     Text="Results."/>
-        </HorizontalStackLayout>
+            </HorizontalStackLayout>
 
-
-        <CollectionView
+            <CollectionView
                     ItemsSource="{Binding FoundJokes}" 
                     HorizontalOptions="Center"
-                    HeightRequest="100"
+                    HeightRequest="200"
+                    SelectedItem="{Binding SelectedFoundJoke}"
+                    SelectionMode="Single"
                     >
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="local_models:ChuckNorrisJoke">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local_models:ChuckNorrisJoke">
 
-                    <HorizontalStackLayout>
-                        <Image
-                            MaximumHeightRequest="50"
-                            MaximumWidthRequest="50"
-                            Source="chucknorris_logo_coloured_small.png"/>
+                        <HorizontalStackLayout Margin="10">
+                            <Image
+                                MaximumHeightRequest="50"
+                                MaximumWidthRequest="50"
+                                Source="chucknorris_logo_coloured_small.png"/>
 
-                        <Label 
-                            Text="{Binding Value}" 
-                            HorizontalOptions="Center"/>
-                    </HorizontalStackLayout>
+                            <Label 
+                                Text="{Binding Value}" 
+                                HorizontalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
 
-        </CollectionView>
+            </CollectionView>
 
-        <Button
-            Text="Clear Search"
-            Command="{Binding ClearFoundJokesCommand}"/>
-    </VerticalStackLayout>
+            <Button
+                    Text="Clear Search"
+                    Command="{Binding ClearFoundJokesCommand}"/>
+
+
+            <Button
+                Text="Tell Joke"
+                Command="{Binding TellJokeCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

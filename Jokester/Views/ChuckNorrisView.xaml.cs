@@ -1,4 +1,5 @@
 using Jokester.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace Jokester.Views;
 
@@ -8,5 +9,6 @@ public partial class ChuckNorrisView: ContentPage
 	{
 		InitializeComponent();
 		BindingContext = chuckNorrisJokeViewModel;
-	}
+        
+    }
 }
