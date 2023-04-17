@@ -20,6 +20,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<HttpClient>();
 		builder.Services.AddSingleton<IAPIService, APIService>();
 		builder.Services.AddSingleton<ITextToSpeechService, DefaultTextToSpeechService>();
+		builder.Services.AddSingleton((e) => Connectivity.Current);
 
 		builder.Services.AddSingleton<ChuckNorrisJokeViewModel>();
 		builder.Services.AddTransient<GeekyJokeViewModel>();

@@ -13,7 +13,7 @@ namespace Jokester.ViewModels
         private readonly string BaseAddress = "https://api.chucknorris.io/jokes";
         private readonly IAPIService apiService;
         private readonly ITextToSpeechService textToSpeechService;
-
+        private readonly IConnectivity connectivity;
         [ObservableProperty, NotifyCanExecuteChangedFor(nameof(TellJokeCommand))]
         private ChuckNorrisJoke joke;
         [ObservableProperty]
@@ -93,6 +93,16 @@ namespace Jokester.ViewModels
 
         private async void GetRequestResult(string url)
         {
+            if (connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                joke = new ChuckNorrisJoke()
+                {
+                    Value = Messages.ErrorMessage
+                };
+
+                return;
+            }
+
             try
             {
                 var res = await apiService.MakeAPIRequest(url);
@@ -129,16 +139,27 @@ namespace Jokester.ViewModels
             }
         }
 
-        public ChuckNorrisJokeViewModel(IAPIService apiService, ITextToSpeechService textToSpeech)
+        public ChuckNorrisJokeViewModel(IAPIService apiService, ITextToSpeechService textToSpeech, IConnectivity connectivity)
         {
             this.apiService = apiService;
             this.textToSpeechService = textToSpeech;
+            this.connectivity = connectivity;
             UpdateCategories();
             
         }
 
         private async void UpdateCategories()
         {
+            if (connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                joke = new ChuckNorrisJoke()
+                {
+                    Value = Messages.ErrorMessage
+                };
+                            
+                return;
+            }
+
             var res = await apiService.MakeAPIRequest($"{BaseAddress}/categories");
             var list = JsonConvert.DeserializeObject<List<string>>(res);
 

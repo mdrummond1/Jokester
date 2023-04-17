@@ -7,7 +7,7 @@
              x:DataType="local:JokeAPIViewModel">
     <VerticalStackLayout>
         <Label 
-            Text="{Binding JokeAPIModel.}"
+            Text="{Binding Joke.joke}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>

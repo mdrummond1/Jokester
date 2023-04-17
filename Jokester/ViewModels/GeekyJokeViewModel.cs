@@ -18,6 +18,7 @@ namespace Jokester.ViewModels
         private string url = "https://geek-jokes.sameerkumar.website/api?format=json";
 
         private IAPIService apiService;
+        private IConnectivity connectivity;
 
         [ObservableProperty]
         private JokeModel joke;
@@ -29,14 +30,22 @@ namespace Jokester.ViewModels
         [RelayCommand]
         private async void GetJoke()
         {
+            if (connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Joke = new JokeModel()
+                {
+                    joke = "No Network Access. Please try again later."
+                };
+                return;
+            }
             var res = await apiService.MakeAPIRequest(url);
             Joke = JsonConvert.DeserializeObject<JokeModel>(res); 
         }
 
-        public GeekyJokeViewModel(IAPIService apiService)
+        public GeekyJokeViewModel(IAPIService apiService, IConnectivity connectivity)
         {
             this.apiService = apiService;
-
+            this.connectivity = connectivity;
         }
 
     }
