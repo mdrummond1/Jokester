@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jokester", "Jokester\Jokester.csproj", "{C73DF39C-7F42-4780-83D7-FD3C7F3618DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jokester.Tests", "Jokester.Tests\Jokester.Tests.csproj", "{DDC7322F-414D-495C-A052-15CB8E98042E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{C73DF39C-7F42-4780-83D7-FD3C7F3618DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C73DF39C-7F42-4780-83D7-FD3C7F3618DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C73DF39C-7F42-4780-83D7-FD3C7F3618DA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DDC7322F-414D-495C-A052-15CB8E98042E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDC7322F-414D-495C-A052-15CB8E98042E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDC7322F-414D-495C-A052-15CB8E98042E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDC7322F-414D-495C-A052-15CB8E98042E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
