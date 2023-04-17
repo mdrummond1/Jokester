@@ -31,6 +31,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+        
+    - name: Install .NET Maui Workload
+      run: dotnet workload install maui
     
     - name: Install Dependencies
       run: dotnet restore
