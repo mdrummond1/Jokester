@@ -8,6 +8,7 @@ namespace Jokester
 {
     public static class Messages
     {
-        public const string ErrorMessage = "No internet access. Please try again later.";
+        public const string NetworkErrorMessage = "No internet access. Please try again later.";
+        public const string GeneralErrorMessage = "Error processing request!";
     }
 }

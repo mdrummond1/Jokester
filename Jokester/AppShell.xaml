@@ -21,10 +21,10 @@
         Icon="geek_square.jpg"
         />
 
-    <ShellContent
+    <!--<ShellContent
         Title="Joke API"
         ContentTemplate="{DataTemplate views:JokeAPIView}"
         Route="JokeAPIView"
-        />
+        />-->
 
 </Shell>

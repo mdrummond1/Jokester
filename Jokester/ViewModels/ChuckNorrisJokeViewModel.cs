@@ -29,6 +29,7 @@ namespace Jokester.ViewModels
         [ObservableProperty]
         private ChuckNorrisJoke selectedFoundJoke;
 
+        private ProfanityFilter.ProfanityFilter filter;
 
         [RelayCommand]
         private void GetChuckNorrisJoke()
@@ -97,7 +98,7 @@ namespace Jokester.ViewModels
             {
                 joke = new ChuckNorrisJoke()
                 {
-                    Value = Messages.ErrorMessage
+                    Value = Messages.NetworkErrorMessage
                 };
 
                 return;
@@ -105,14 +106,21 @@ namespace Jokester.ViewModels
 
             try
             {
-                var res = await apiService.MakeAPIRequest(url);
+                string res = "";
+                int b;
+                do
+                {
+                    res = await apiService.MakeAPIRequest(url);
+                    b = filter.DetectAllProfanities(res).Count;
+                } while (b > 0);
+                                                
                 UpdateJoke(res);
             }
             catch
             {
                 Joke = new ChuckNorrisJoke()
                 {
-                    Value = "Error processing request!"
+                    Value = Messages.GeneralErrorMessage
                 };
                 JokeSearchText = "";
             }
@@ -121,6 +129,7 @@ namespace Jokester.ViewModels
         private void UpdateJoke(string res)
         {
             Joke = JsonConvert.DeserializeObject<ChuckNorrisJoke>(res);
+            Joke.Value = filter.CensorString(Joke.Value);
             if (string.IsNullOrEmpty(Joke.Value))
             {
                 var searchResults = JsonConvert.DeserializeObject<ChuckNorrisJokeSearchResults>(res);
@@ -145,7 +154,11 @@ namespace Jokester.ViewModels
             this.textToSpeechService = textToSpeech;
             this.connectivity = connectivity;
             UpdateCategories();
+            filter = new ProfanityFilter.ProfanityFilter();
+
             
+
+
         }
 
         private async void UpdateCategories()
@@ -154,7 +167,7 @@ namespace Jokester.ViewModels
             {
                 joke = new ChuckNorrisJoke()
                 {
-                    Value = Messages.ErrorMessage
+                    Value = Messages.NetworkErrorMessage
                 };
                             
                 return;
@@ -162,7 +175,7 @@ namespace Jokester.ViewModels
 
             var res = await apiService.MakeAPIRequest($"{BaseAddress}/categories");
             var list = JsonConvert.DeserializeObject<List<string>>(res);
-
+            list.Remove("explicit");
 
             Categories = new ObservableCollection<string>();
 

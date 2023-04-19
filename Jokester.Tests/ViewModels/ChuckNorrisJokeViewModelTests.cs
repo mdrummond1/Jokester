@@ -67,7 +67,7 @@ namespace Jokester.ViewModels.Tests
             connectivityMock.NetworkAccess = NetworkAccess.None;
             viewModel.GetChuckNorrisJokeCommand.Execute(null);
 
-            Assert.Equal(Messages.ErrorMessage, viewModel.Joke.Value);
+            Assert.Equal(Messages.NetworkErrorMessage, viewModel.Joke.Value);
         }
     }
 }
