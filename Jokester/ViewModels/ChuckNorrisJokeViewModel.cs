@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jokester.Models;
-using Jokester.Services;
+using Jokester.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
@@ -9,11 +9,19 @@ namespace Jokester.ViewModels
 {
     public partial class ChuckNorrisJokeViewModel : ObservableObject
     {
+        #region Fields
 
         private readonly string BaseAddress = "https://api.chucknorris.io/jokes";
         private readonly IAPIService apiService;
         private readonly ITextToSpeechService textToSpeechService;
         private readonly IConnectivity connectivity;
+        private readonly IDataService dataService;
+        private ProfanityFilter.ProfanityFilter filter;
+
+        #endregion
+
+        #region Bindings
+
         [ObservableProperty, NotifyCanExecuteChangedFor(nameof(TellJokeCommand))]
         private ChuckNorrisJoke joke;
         [ObservableProperty]
@@ -29,7 +37,25 @@ namespace Jokester.ViewModels
         [ObservableProperty]
         private ChuckNorrisJoke selectedFoundJoke;
 
-        private ProfanityFilter.ProfanityFilter filter;
+        #endregion
+        
+        public ChuckNorrisJokeViewModel(
+            IAPIService apiService,
+            ITextToSpeechService textToSpeech,
+            IConnectivity connectivity,
+            IDataService dataService)
+        {
+            this.apiService = apiService;
+            this.textToSpeechService = textToSpeech;
+            this.connectivity = connectivity;
+            this.dataService = dataService;
+
+            UpdateCategories();
+
+            filter = new ProfanityFilter.ProfanityFilter();
+        }
+
+        #region Commands
 
         [RelayCommand]
         private void GetChuckNorrisJoke()
@@ -87,6 +113,10 @@ namespace Jokester.ViewModels
             textToSpeechService.SpeakAsync(Joke.Value);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private bool CanTellJoke()
         {
             return Joke is not null;
@@ -130,6 +160,7 @@ namespace Jokester.ViewModels
         {
             Joke = JsonConvert.DeserializeObject<ChuckNorrisJoke>(res);
             Joke.Value = filter.CensorString(Joke.Value);
+
             if (string.IsNullOrEmpty(Joke.Value))
             {
                 var searchResults = JsonConvert.DeserializeObject<ChuckNorrisJokeSearchResults>(res);
@@ -141,24 +172,12 @@ namespace Jokester.ViewModels
                 {
                     foreach (var joke in searchResults.result)
                     {
+                        joke.Value = filter.CensorString(joke.Value);
                         FoundJokes.Add(joke);
                     }
                 }
                 JokeSearchText = "";
             }
-        }
-
-        public ChuckNorrisJokeViewModel(IAPIService apiService, ITextToSpeechService textToSpeech, IConnectivity connectivity)
-        {
-            this.apiService = apiService;
-            this.textToSpeechService = textToSpeech;
-            this.connectivity = connectivity;
-            UpdateCategories();
-            filter = new ProfanityFilter.ProfanityFilter();
-
-            
-
-
         }
 
         private async void UpdateCategories()
@@ -184,5 +203,7 @@ namespace Jokester.ViewModels
                 Categories.Add(cat);
             }
         }
+
+        #endregion
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jokester.Services
+namespace Jokester.Services.Interfaces
 {
     public interface ITextToSpeechService
     {

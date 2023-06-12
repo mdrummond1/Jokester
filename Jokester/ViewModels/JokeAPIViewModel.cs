@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Jokester.Models;
-using Jokester.Services;
+using Jokester.Services.Interfaces;
 using Microsoft.Maui.Networking;
 using Newtonsoft.Json;
 

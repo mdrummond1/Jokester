@@ -1,4 +1,4 @@
-﻿using Jokester.Services;
+﻿using Jokester.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,6 @@
-﻿using Jokester.Services;
+﻿using Jokester.Models;
+using Jokester.Services.Impl;
+using Jokester.Services.Interfaces;
 using Jokester.ViewModels;
 using Jokester.Views;
 
@@ -17,9 +19,17 @@ public static class MauiProgram
 				fonts.AddFont("OpenSansSemibold.ttf", "OpenSansSemibold");
 			});
 
-		builder.Services.AddSingleton<HttpClient>();
+        string filename = $"{Path.Combine(FileSystem.AppDataDirectory, "Person.db3")}";
+		List<Type> types = new List<Type>()
+		{
+			typeof(ChuckNorrisJoke),
+			typeof(GeekyJokeView),
+		};
+
+        builder.Services.AddSingleton<HttpClient>();
 		builder.Services.AddSingleton<IAPIService, APIService>();
 		builder.Services.AddSingleton<ITextToSpeechService, DefaultTextToSpeechService>();
+		builder.Services.AddSingleton<IDataService>(s => new SqlLiteDataBaseDataService(filename, types));
 		builder.Services.AddSingleton((e) => Connectivity.Current);
 
 		builder.Services.AddSingleton<ChuckNorrisJokeViewModel>();

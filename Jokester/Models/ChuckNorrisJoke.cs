@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 
 namespace Jokester.Models
 {
-    public class ChuckNorrisJoke
+    public class ChuckNorrisJoke : Entity<string>
     {
         [JsonPropertyName("icon_url")]
         public string Icon_URL { get; set; }
-        
-        [JsonPropertyName("id")]
-        public string ID { get; set; }
         
         [JsonPropertyName("url")]
         public string URL { get; set; }

@@ -1,12 +1,11 @@
-﻿
-namespace Jokester.Services
+﻿namespace Jokester.Services.Interfaces
 {
     public interface IAPIService
     {
         Task<string> MakeAPIRequest(string reqURL);
     }
 
-    public class APIService: IAPIService
+    public class APIService : IAPIService
     {
         private readonly HttpClient client;
 
@@ -25,7 +24,7 @@ namespace Jokester.Services
             {
                 Console.WriteLine(ex.Message);
             }
-           
+
             return null;
         }
     }

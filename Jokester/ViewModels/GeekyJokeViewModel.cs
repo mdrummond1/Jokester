@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jokester.Models;
-using Jokester.Services;
+using Jokester.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
