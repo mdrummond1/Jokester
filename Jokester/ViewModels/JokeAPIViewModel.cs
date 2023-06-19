@@ -25,7 +25,7 @@ namespace Jokester.ViewModels
         {
             if (connectivity.NetworkAccess != NetworkAccess.Internet)
             {
-                joke = new JokeAPIModel()
+                Joke = new JokeAPIModel()
                 {
                     joke = "No network access. Please try again later."
                 };
@@ -33,7 +33,7 @@ namespace Jokester.ViewModels
             }
 
             var res = await apiService.MakeAPIRequest(url);
-            joke = JsonConvert.DeserializeObject<JokeAPIModel>(res);
+            Joke = JsonConvert.DeserializeObject<JokeAPIModel>(res);
         }
 
     }

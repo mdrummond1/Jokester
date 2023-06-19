@@ -66,7 +66,7 @@ namespace Jokester.ViewModels
         [RelayCommand]
         private void GetRandomChuckNorrisJokeFromCategory()
         {
-            if (selectedCategory is null)
+            if (SelectedCategory is null)
             {
                 Joke = new ChuckNorrisJoke()
                 {
@@ -126,7 +126,7 @@ namespace Jokester.ViewModels
         {
             if (connectivity.NetworkAccess != NetworkAccess.Internet)
             {
-                joke = new ChuckNorrisJoke()
+                Joke = new ChuckNorrisJoke()
                 {
                     Value = Messages.NetworkErrorMessage
                 };
@@ -184,7 +184,7 @@ namespace Jokester.ViewModels
         {
             if (connectivity.NetworkAccess != NetworkAccess.Internet)
             {
-                joke = new ChuckNorrisJoke()
+                Joke = new ChuckNorrisJoke()
                 {
                     Value = Messages.NetworkErrorMessage
                 };
