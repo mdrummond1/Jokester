@@ -12,7 +12,7 @@ namespace Jokester.Tests.Mocks
 
         public NetworkAccess NetworkAccess { get; set; }
 
-        public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
+        public event EventHandler<ConnectivityChangedEventArgs>? ConnectivityChanged;
 
         
     }

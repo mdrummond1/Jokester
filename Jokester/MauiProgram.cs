@@ -22,7 +22,7 @@ public static class MauiProgram
         string filename = $"{Path.Combine(FileSystem.AppDataDirectory, "Person.db3")}";
 		List<Type> types = new List<Type>()
 		{
-			typeof(ChuckNorrisJoke)
+			typeof(JokeModel)
 		};
 
         builder.Services.AddSingleton<HttpClient>();

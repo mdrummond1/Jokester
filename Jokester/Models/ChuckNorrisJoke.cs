@@ -17,5 +17,8 @@ namespace Jokester.Models
         
         [JsonPropertyName("value")]
         public string Value { get; set; }
+
+        [JsonPropertyName("categories")]
+        public string[] Categories { get; set; } 
     }
 }

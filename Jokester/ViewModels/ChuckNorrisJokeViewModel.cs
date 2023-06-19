@@ -134,16 +134,21 @@ namespace Jokester.ViewModels
                 return;
             }
 
+            string res = "";
             try
             {
-                string res = "";
                 int b;
+                ChuckNorrisJoke j = null;
                 do
                 {
                     res = await apiService.MakeAPIRequest(url);
-                    b = filter.DetectAllProfanities(res).Count;
-                } while (b > 0);
-                                                
+                    j = JsonConvert.DeserializeObject<ChuckNorrisJoke>(res);
+                } while (j.Categories.Any(t => t.Contains("explicit")));
+
+                UpdateJoke(res);
+            }
+            catch  (ArgumentNullException)
+            {
                 UpdateJoke(res);
             }
             catch
@@ -154,16 +159,17 @@ namespace Jokester.ViewModels
                 };
                 JokeSearchText = "";
             }
+            
         }
 
         private void UpdateJoke(string res)
         {
             Joke = JsonConvert.DeserializeObject<ChuckNorrisJoke>(res);
-            Joke.Value = filter.CensorString(Joke.Value);
 
             if (string.IsNullOrEmpty(Joke.Value))
             {
                 var searchResults = JsonConvert.DeserializeObject<ChuckNorrisJokeSearchResults>(res);
+                
                 NumberSearchResults = searchResults.total;
 
                 FoundJokes = new ObservableCollection<ChuckNorrisJoke>();
@@ -172,8 +178,14 @@ namespace Jokester.ViewModels
                 {
                     foreach (var joke in searchResults.result)
                     {
-                        joke.Value = filter.CensorString(joke.Value);
-                        FoundJokes.Add(joke);
+                        if (!joke.Categories.Any(c => c.Contains("explicit")))
+                        {
+                            FoundJokes.Add(joke);
+                        }
+                        else
+                        {
+                            NumberSearchResults--;
+                        }
                     }
                 }
                 JokeSearchText = "";
