@@ -41,7 +41,8 @@ namespace Jokester.ViewModels.Tests
             mockAPI = new MockAPIService();
             connectivityMock = new ConnectivityMock();
             mockAPI.RequestReturnValue = JsonConvert.SerializeObject(jokeCategories);
-            viewModel = new ChuckNorrisJokeViewModel(mockAPI, new MockTextToSpeechService(), connectivityMock);
+
+            viewModel = new ChuckNorrisJokeViewModel(mockAPI, new MockTextToSpeechService(), connectivityMock, new MockDataService());
         }
 
         [Fact]

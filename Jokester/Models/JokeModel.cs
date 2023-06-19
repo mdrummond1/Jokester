@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jokester.Models
 {
-    public class JokeModel
+    public class JokeModel: Entity<int>
     {
         public string joke { get; set; }
     }

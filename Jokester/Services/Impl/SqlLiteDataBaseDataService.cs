@@ -12,10 +12,7 @@ namespace Jokester.Services.Impl
         {
             connection = new SQLiteConnection(filename);
 
-            foreach (Type type in types)
-            {
-                connection.CreateTable(type);
-            }
+            connection.CreateTables(types: types.ToArray());
         }
 
         public void Delete<T>(int id)
